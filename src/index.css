@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
+
+:root{
+    /* --bg: #191414; */
+    --bg:#191919;
+    --light-font-color: #FAFAFA;
+    --dark-font-color: #999999;
+    --green-spotify: #1DB954;
+    --green-spotify-hover: rgb(35, 201, 93);
+    --error: rgb(201, 46, 35);
+    --hover-text: #000000;
+    --hover-text-opacity: 0.5;
+    --font:'Roboto', sans-serif;
+    --font-size-1: 48px;
+    --font-size-2: 24px;
+    --font-size-3: 18px;
+    --font-size-4: 16px;
+    --font-size-5: 14px;
+}
+
+body, html{
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg);
+}
+
+#root{
+    padding: 50px;
+    color: var(--light-font-color);
+    font-family: var(--font);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.spotify-button{
+    padding: 10px 100px;
+    outline: none;
+    border: none;
+    border-radius: 25px;
+    background-color: var(--green-spotify);
+    cursor: pointer;
+    color: var(--light-font-color);
+    font-weight: bold;
+    letter-spacing: 2px;
+    transition: background-color 0.25s;
+}
+.spotify-button:hover{
+    background-color: var(--green-spotify-hover);
+}
+
+.spotify-icon{
+    background-image: url(/src/assets/spotify-icons-logos/icons/02_CMYK/02_PNG/Spotify_Icon_CMYK_Green.png);
+    background-position: center;
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    top: 50px;
+    left: 50px;
+}

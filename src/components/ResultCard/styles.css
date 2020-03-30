@@ -1,0 +1,21 @@
+.result-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--font-size-5);
+}
+.result-card img{
+    width: 150px;
+    height: 150px;
+    margin-bottom: 15px;
+}
+.result-card span{
+    margin: 5px 0;
+}
+.rc-title{
+    color: var(--light-font-color)
+}
+.rc-details{
+    color: var(--dark-font-color)
+}

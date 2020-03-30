@@ -1,0 +1,19 @@
+.auth-screen{
+    text-align: center;
+    width: 40vw;
+    font-weight: bold;
+    line-height: 2em;
+}
+
+.auth-screen h1{
+    text-transform: uppercase;
+    color: var(--green-spotify)
+}
+
+.auth-screen .fail{
+    background-color: var(--error);
+    width: 100%;
+    border-radius: 50px;
+    color: var(--light-font-color);
+    padding: 10px 0px;
+}

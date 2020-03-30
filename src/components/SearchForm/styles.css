@@ -1,0 +1,21 @@
+.search-form{
+    display: flex;
+    flex-direction: column;
+}
+.search-form input{
+    width: 75vw;
+    font-size: var(--font-size-1) ;
+    background-color: var(--bg);
+    border: none;
+    border-bottom: 1px solid var(--light-font-color);
+    color: var(--light-font-color);
+    outline: none;
+    align-self: center;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.search-form input::placeholder{
+    color: var(--light-font-color); 
+    opacity:.5;
+}

@@ -1,0 +1,17 @@
+.results-card-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 75vw;
+    align-items: center;
+    justify-content: space-between;
+    margin: 25px 0;
+}
+
+.results-card-container > *{
+    margin: 15px;
+}
+
+.results-container{
+    margin: 25px 0
+}
