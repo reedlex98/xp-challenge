@@ -35,5 +35,8 @@ module.exports = {
             template: './public/index.html'
         }), // defines the plugin which will be used to generate the html file in the build
         new Dotenv()
-    ]
+    ],
+    devServer: {
+        historyApiFallback: true
+    }
 }

@@ -5,7 +5,7 @@ import SearchForm from '../SearchForm'
 import SearchResults from '../SearchResults'
 import Spotify from 'spotify-web-api-js'
 import { connect } from 'react-redux'
-import { cashResults } from '../../actions/actionCreators'
+import { cashResults, unsetAuth } from '../../helpers/actions/actionCreators'
 
 const spotifyWebApi = new Spotify()
 
@@ -54,7 +54,7 @@ class Main extends Component {
         e.preventDefault()
 
         const { search } = this.state
-        const { cachedResults } = this.props
+        const { cachedResults, token, dispatch } = this.props
 
         if (cachedResults && cachedResults[search]) {
             this.setState({
@@ -63,16 +63,21 @@ class Main extends Component {
             })
         }
         else {
-            spotifyWebApi.search(search, ['album,artist,track'], { limit: 10 }, (err, res) => this.onResult(err, res, search))
+            if (!isTokenExpired(token)) {
+                spotifyWebApi.search(search, ['album,artist,track'], { limit: 10 }, (err, res) => this.onResult(err, res, search))
+            }
+            else{
+                dispatch(unsetAuth())
+            }  
         }
 
     }
 
     render() {
         const { search, isSearching, results } = this.state
-        const { handleSubmit, handleChange } =  this
+        const { handleSubmit, handleChange } = this
         const { cachedResults } = this.props
-        
+
         return <>
             <SearchForm handleChange={handleChange} handleSubmit={handleSubmit} searchValue={search} />
             <SearchResults searchedTerm={search} isSearching={isSearching} results={results} prevSearch={cachedResults && Object.values(cachedResults)[Object.values(cachedResults).length - 1]} />
@@ -80,9 +85,10 @@ class Main extends Component {
     }
 }
 
-function mapStateToProps({ cachedResults }) {
+function mapStateToProps({ cachedResults, token }) {
     return {
-        cachedResults
+        cachedResults,
+        token
     }
 }
 

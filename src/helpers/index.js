@@ -3,6 +3,7 @@
  * @return Object
  */
 import moment from 'moment'
+import __ from 'lodash'
 
 export function getHashParams() {
     var hashParams = {};
@@ -42,7 +43,7 @@ export function isTokenExpired(token) {
 export function handleTokenRequest() {
 
     const client_id = process.env.CLIENT_ID
-    const redirect_uri = process.env.APP_URI
+    const redirect_uri = process.env.REDIRECT_URI
     const scope = 'user-read-private user-read-email streaming'
     const authState = generateRandomString(15)
     const authStateKey = "SPOTIFY_AUTH_STATE"
@@ -57,4 +58,44 @@ export function handleTokenRequest() {
     url += '&state=' + encodeURIComponent(authState);
 
     window.location = url;
+}
+
+export function handleAuth(params, state, authStateKey){
+    if (!__.isEmpty(params)) {
+        const { access_token, state: receivedAuthState, expires_in } = params
+        const storedState = localStorage.getItem(authStateKey)
+        if (access_token && (receivedAuthState == null || receivedAuthState !== storedState)) {
+            return {
+                ...state,
+                failToAuth: true,
+                isAuth: false
+            }
+        } else {
+            localStorage.removeItem(authStateKey);
+            if (access_token) {
+                const token = {
+                    access_token,
+                    expires_in,
+                    created_at: new Date()
+                }
+                localStorage.setItem("token", JSON.stringify(token))
+                return {
+                    ...state,
+                    failToAuth: false,
+                    isAuth: true,
+                    token
+                }
+            }
+            else {
+                return {
+                    ...state,
+                    failToAuth: true,
+                    isAuth: false
+                }
+            }
+        }
+    }
+    else{
+        return { ...state }
+    }
 }

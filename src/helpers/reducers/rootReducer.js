@@ -1,6 +1,7 @@
-import { AUTH, SET_TOKEN, FAIL_TO_AUTH, CASH_RESULTS } from '../actions/actionTypes'
+import { AUTH, CASH_RESULTS, UNSET_AUTH } from '../actions/actionTypes'
 import __ from 'lodash'
-import { isTokenExpired } from '../helpers'
+import { isTokenExpired } from '..'
+import { handleAuth } from '../../helpers'
 
 const storedToken = JSON.parse(localStorage.getItem("token"))
 
@@ -12,16 +13,14 @@ const initialState = {
 }
 
 export default function rootReducer(state = initialState, action) {
-  const { token, localStorageKey, dataToBeCashed } = action
+  const { localStorageKey, dataToBeCashed, hashParams } = action
   let { cachedResults } = state
+  let newState
   
   switch (action.type) {
     case AUTH:
-      return { ...state, isAuth: !__.isEmpty(token) && !isTokenExpired(token) }
-    case SET_TOKEN:
-      return { ...state, token }
-    case FAIL_TO_AUTH:
-      return { ...state, failToAuth: true, isAuth: false }
+      newState = handleAuth(hashParams, state, "SPOTIFY_AUTH_STATE")
+      return { ...newState }
     case CASH_RESULTS:
       if (cachedResults) {
         cachedResults[localStorageKey] = dataToBeCashed
@@ -31,10 +30,13 @@ export default function rootReducer(state = initialState, action) {
           [localStorageKey]: dataToBeCashed
         }
       }
-      let newState = {...state, cachedResults}
+      newState = {...state, cachedResults}
       cachedResults = JSON.stringify(cachedResults)
       localStorage.setItem("cachedResults", cachedResults)
       return newState
+    case UNSET_AUTH:
+      localStorage.removeItem("token")
+      return {...state, isAuth: false, failToAuth: false, token: null}
     default:
       return state;
   }
