@@ -1,4 +1,4 @@
-import {AUTH, SET_TOKEN,FAIL_TO_AUTH} from './actionTypes'
+import {AUTH, SET_TOKEN,FAIL_TO_AUTH, CASH_RESULTS} from './actionTypes'
 
 export function setToken(token) {
     return {
@@ -13,9 +13,18 @@ export function auth(token) {
         type: AUTH
     }
 }
+
 export function failToAuth() {
     return {
         type: FAIL_TO_AUTH
+    }
+}
+
+export function cashResults(localStorageKey, dataToBeCashed) {
+    return {
+        type: CASH_RESULTS,
+        localStorageKey,
+        dataToBeCashed
     }
 }
 

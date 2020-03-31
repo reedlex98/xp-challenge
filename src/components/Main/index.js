@@ -4,19 +4,19 @@ import './styles.css'
 import SearchForm from '../SearchForm'
 import SearchResults from '../SearchResults'
 import Spotify from 'spotify-web-api-js'
+import { connect } from 'react-redux'
+import { cashResults } from '../../actions/actionCreators'
 
 const spotifyWebApi = new Spotify()
 
-export default class Main extends Component {
+class Main extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            search: '',
+            search: "",
             results: [],
             isSearching: false,
-            cachedResults: localStorage.getItem("cachedResults") && JSON.parse(localStorage.getItem("cachedResults")),
-            hasCachedData: !!localStorage.getItem("cachedResults")
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -37,24 +37,12 @@ export default class Main extends Component {
         })
     }
 
-    onResult(err, results, search, cachedResults) {
+    onResult(err, results, localStorageKey) {
+        const { dispatch } = this.props
         if (err) {
             console.log(err)
-            // setar o isAuth pra false
-            // ir para a url de autenticacao
-            // excluir o token
         } else {
-            if (cachedResults) {
-                cachedResults = JSON.parse(cachedResults)
-                cachedResults[search] = results
-            }
-            else {
-                cachedResults = {
-                    [search]: results
-                }
-            }
-            cachedResults = JSON.stringify(cachedResults)
-            localStorage.setItem("cachedResults", cachedResults)
+            dispatch(cashResults(localStorageKey, results))
             this.setState({
                 results,
                 isSearching: true
@@ -66,25 +54,36 @@ export default class Main extends Component {
         e.preventDefault()
 
         const { search } = this.state
+        const { cachedResults } = this.props
 
-        let cachedResults = localStorage.getItem('cachedResults')
-
-        if (cachedResults && JSON.parse(cachedResults)[search]) {
+        if (cachedResults && cachedResults[search]) {
             this.setState({
-                results: JSON.parse(cachedResults)[search],
+                results: cachedResults[search],
                 isSearching: true
             })
         }
         else {
-            spotifyWebApi.search(this.state.search, ['album,artist,track'], { limit: 10 }, (err,res) => this.onResult(err, res, search, cachedResults) )
+            spotifyWebApi.search(search, ['album,artist,track'], { limit: 10 }, (err, res) => this.onResult(err, res, search))
         }
 
     }
 
     render() {
+        const { search, isSearching, results } = this.state
+        const { handleSubmit, handleChange } =  this
+        const { cachedResults } = this.props
+        
         return <>
-            <SearchForm handleChange={this.handleChange} handleSubmit={this.handleSubmit} searchValue={this.state.search} />
-            <SearchResults searchedTerm={this.state.search} isSearching={this.state.isSearching} results={this.state.results}/>
+            <SearchForm handleChange={handleChange} handleSubmit={handleSubmit} searchValue={search} />
+            <SearchResults searchedTerm={search} isSearching={isSearching} results={results} prevSearch={cachedResults && Object.values(cachedResults)[Object.values(cachedResults).length - 1]} />
         </>
     }
 }
+
+function mapStateToProps({ cachedResults }) {
+    return {
+        cachedResults
+    }
+}
+
+export default connect(mapStateToProps)(Main);
