@@ -26,7 +26,7 @@ export default class Main extends Component {
 
     componentDidMount() {
         const { token } = this.props
-        spotifyWebApi.setAccessToken(token.value)
+        spotifyWebApi.setAccessToken(token.access_token)
     }
 
     handleChange(e) {
@@ -40,6 +40,9 @@ export default class Main extends Component {
     onResult(err, results, search, cachedResults) {
         if (err) {
             console.log(err)
+            // setar o isAuth pra false
+            // ir para a url de autenticacao
+            // excluir o token
         } else {
             if (cachedResults) {
                 cachedResults = JSON.parse(cachedResults)

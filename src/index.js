@@ -1,10 +1,12 @@
 import React from 'react'
-import ReactDOM from 'react-dom' // since react isn't used just in web application, this module needs to be imported to specify we are going to be use react to deal with the DOM in a browser environment
+import ReactDOM from 'react-dom'
 import App from './App'
+import Root from './Root'
 import './index.css'
-import {BrowserRouter as Router} from 'react-router-dom'
+import { createStore } from 'redux'
+import rootReducer from './reducers/rootReducer'
 
-ReactDOM.render(<Router>
- <App/>
-</Router>
-, document.getElementById("root"))
+const store = createStore(rootReducer, 
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+
+ReactDOM.render(<Root store={store} />, document.getElementById("root"))

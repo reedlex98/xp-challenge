@@ -29,12 +29,32 @@ export function generateRandomString(length) {
     return text;
 };
 
-export function isTokenExpired(token){
+export function isTokenExpired(token) {
     const storedToken = localStorage.getItem("token")
-    if(storedToken){
+    if (storedToken) {
         token = JSON.parse(storedToken)
     }
     token.expires_in = parseInt(token.expires_in)
     const currentDate = new Date()
-    return moment(currentDate).diff(token.created_at,'seconds') > token.expires_in
+    return moment(currentDate).diff(token.created_at, 'seconds') > token.expires_in
+}
+
+export function handleTokenRequest() {
+
+    const client_id = process.env.CLIENT_ID
+    const redirect_uri = process.env.APP_URI
+    const scope = 'user-read-private user-read-email streaming'
+    const authState = generateRandomString(15)
+    const authStateKey = "SPOTIFY_AUTH_STATE"
+    
+    localStorage.setItem(authStateKey, authState);
+
+    let url = 'https://accounts.spotify.com/authorize';
+    url += '?response_type=token';
+    url += '&client_id=' + encodeURIComponent(client_id);
+    url += '&scope=' + encodeURIComponent(scope);
+    url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
+    url += '&state=' + encodeURIComponent(authState);
+
+    window.location = url;
 }
