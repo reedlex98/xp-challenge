@@ -7,11 +7,12 @@ export function auth(hashParams) {
     }
 }
 
-export function cashResults(localStorageKey, dataToBeCashed) {
+export function cashResults(localStorageKey, dataToBeCashed, routeKey) {
     return {
         type: CASH_RESULTS,
         localStorageKey,
-        dataToBeCashed
+        dataToBeCashed,
+        routeKey
     }
 }
 

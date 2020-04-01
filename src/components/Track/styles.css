@@ -1,0 +1,11 @@
+.track{
+    padding: 15px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--dark-font-color);
+}
+
+.track_name{
+    color: var(--light-font-color)
+}

@@ -99,3 +99,15 @@ export function handleAuth(params, state, authStateKey){
         return { ...state }
     }
 }
+
+export function limitString(str, charLimit = 20) {
+    return str.length > charLimit ? str.slice(0,charLimit) + '...' : str
+}
+
+export function convertMsToTimestamp(ms){
+    let totalSeconds = ms / 1000
+    let min = Math.round(totalSeconds / 60)
+    let remainingSeconds = Math.floor(totalSeconds % 60)
+    remainingSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds 
+    return `${min}:${remainingSeconds}`
+}

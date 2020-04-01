@@ -37,12 +37,12 @@ class Main extends Component {
         })
     }
 
-    onResult(err, results, localStorageKey) {
+    onResult(err, results, localStorageKey, routeKey) {
         const { dispatch } = this.props
         if (err) {
             console.log(err)
         } else {
-            dispatch(cashResults(localStorageKey, results))
+            dispatch(cashResults(localStorageKey, results, routeKey))
             this.setState({
                 results,
                 isSearching: true
@@ -64,7 +64,7 @@ class Main extends Component {
         }
         else {
             if (!isTokenExpired(token)) {
-                spotifyWebApi.search(search, ['album,artist,track'], { limit: 10 }, (err, res) => this.onResult(err, res, search))
+                spotifyWebApi.search(search, ['album,artist,track'], { limit: 30 }, (err, res) => this.onResult(err, res, search, '/search'))
             }
             else{
                 dispatch(unsetAuth())
@@ -80,7 +80,7 @@ class Main extends Component {
 
         return <>
             <SearchForm handleChange={handleChange} handleSubmit={handleSubmit} searchValue={search} />
-            <SearchResults searchedTerm={search} isSearching={isSearching} results={results} prevSearch={cachedResults && Object.values(cachedResults)[Object.values(cachedResults).length - 1]} />
+            <SearchResults searchedTerm={search} isSearching={isSearching} results={results} prevSearch={cachedResults['/search'] && Object.values(cachedResults['/search'])[Object.values(cachedResults['/search']).length - 1]} />
         </>
     }
 }
