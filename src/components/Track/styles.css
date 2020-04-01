@@ -9,3 +9,7 @@
 .track_name{
     color: var(--light-font-color)
 }
+
+.track_name.playing{
+    color: var(--green-spotify)
+}

@@ -80,7 +80,7 @@ class Main extends Component {
 
         return <>
             <SearchForm handleChange={handleChange} handleSubmit={handleSubmit} searchValue={search} />
-            <SearchResults searchedTerm={search} isSearching={isSearching} results={results} prevSearch={cachedResults['/search'] && Object.values(cachedResults['/search'])[Object.values(cachedResults['/search']).length - 1]} />
+            <SearchResults searchedTerm={search} isSearching={isSearching} results={results} prevSearch={cachedResults && cachedResults['/search'] && Object.values(cachedResults['/search'])[Object.values(cachedResults['/search']).length - 1]} />
         </>
     }
 }

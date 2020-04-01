@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import Spotify from 'spotify-web-api-js'
 import __ from 'lodash'
 import { limitString, isTokenExpired } from '../../helpers'
@@ -51,22 +52,27 @@ class Albums extends Component {
     }
 
     render() {
-        if (!__.isEmpty(this.state.album)) {
-            const { images, name, type, artists, tracks } = this.state.album
-            return <div className="album-container">
+        if (__.isEmpty(this.state.album)) {
+            return <></>
+        }
+        const { images, name, type, artists, tracks } = this.state.album
+        return <>
+            <div className="album-container">
                 <div className="album-thumbnail">
                     <img src={images[1] ? images[1].url : SPOTIFY_ICON_URL} alt={`${name}-${type}`} />
                     <span className="ab-title">{name}</span>
-                    <span className="ab-detail">{limitString(artists.map(artists => artists.name).join(", "), 30)}</span>
+                    <span className="ab-detail">{limitString(artists.map(artists => artists.name).join(", "), 80)}</span>
                 </div>
                 <ol className="album-tracks">
                     {!__.isEmpty(tracks.items) && tracks.items.map(trackData => <Track key={trackData.id} {...trackData} />)}
                 </ol>
+            </div> 
+            <div className="go-back">
+                <Link to="/">
+                    {"< Voltar"}
+                </Link>
             </div>
-        }
-        else {
-            return <div></div>
-        }
+        </>
     }
 }
 

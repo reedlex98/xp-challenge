@@ -38,6 +38,10 @@ a{
     align-items: center;
 }
 
+img{
+    max-width: 100%;
+}
+
 .spotify-button{
     padding: 10px 100px;
     outline: none;
@@ -63,6 +67,19 @@ a{
     position: fixed;
     top: 2vh;
     left: 2vw;
+}
+
+.go-back{
+    position: fixed;
+    bottom: 2vh;
+    left: 2vw;
+    transition: color 0.25s;
+    font-size: var(--font-size-2);
+    font-weight: bold;
+}
+
+.go-back:hover{
+    color: var(--green-spotify);
 }
 
 @media screen and (max-width: 600px) {
